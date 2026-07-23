@@ -1,10 +1,10 @@
-name: Auto Update Toffee Files
+name: Auto Update Toffee Playlist
 
 on:
   schedule:
     # প্রতি ৫ মিনিট পরপর রান হবে
     - cron: '*/5 * * * *'
-  workflow_dispatch: # দরকার হলে ম্যানুয়ালি রান করার অপশন
+  workflow_dispatch: # ম্যানুয়ালি রান করার অপশন
 
 jobs:
   build-and-update:
@@ -31,7 +31,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add toffee_data.json toffee_playlist.m3u
           
-          # ফাইল পরিবর্তন হলে তবেই পুশ করবে
-          git diff --staged --quiet || (git commit -m "Auto update Toffee data and playlist [skip ci]" && git push)
+          # নির্দিষ্ট নাম না দিয়ে সব পরিবর্তন বা নতুন ফাইল ট্র্যাক করার জন্য git add .
+          git add .
+          
+          # পরিবর্তন থাকলে তবেই কমিট ও পুশ করবে
+          git diff --staged --quiet || (git commit -m "Auto update Toffee files [skip ci]" && git push)
